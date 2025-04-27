@@ -1,13 +1,14 @@
 package ec.edu.est.poo.clases;
 
 import ec.edu.est.poo.abstracts.Persona;
+import ec.edu.est.poo.enums.EstadoSolicitud;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Empleado extends Persona {
     private  String cargo;
     private String departamento;
-
     public Empleado(int id, String nombre, String direccion, String telefono, String cargo, String departamento) {
         super(id, nombre, direccion, telefono);
         this.cargo = cargo;
@@ -16,23 +17,23 @@ public class Empleado extends Persona {
     public Empleado() {
 
     }
-
     public String getCargo() {
         return cargo;
     }
-
     public void setCargo(String cargo) {
         this.cargo = cargo;
     }
-
     public String getDepartamento() {
         return departamento;
     }
-
     public void setDepartamento(String departamento) {
         this.departamento = departamento;
     }
-
+    public SolicitudCompra realizarSolicitudCompra(int id, String departamento, List<DetalleCompra> productos) {
+        SolicitudCompra solicitudCompra = new SolicitudCompra(id, departamento, EstadoSolicitud.SOLICITADA, productos);
+        System.out.println("Solicitud de compra creada: " + solicitudCompra);
+        return solicitudCompra;
+    }
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -40,12 +41,10 @@ public class Empleado extends Persona {
         Empleado empleado = (Empleado) o;
         return Objects.equals(cargo, empleado.cargo) && Objects.equals(departamento, empleado.departamento);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), cargo, departamento);
     }
-
     @Override
     public String toString() {
         return "Empleado{" +
