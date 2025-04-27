@@ -23,6 +23,20 @@ public class Proveedor extends Persona {
         System.out.println("Producto Registrado: " + newProducto);
     }
     @Override
+    public void mostrarInfo() {
+        System.out.println("Proveedor:");
+        System.out.println("ID: " + getId());
+        System.out.println("Nombre: " + getNombre());
+        System.out.println("Dirección: " + getDireccion());
+        System.out.println("Teléfono: " + getTelefono());
+        if (producto != null) {
+            System.out.println("Producto que ofrece: " + producto.getNombre());
+        } else {
+            System.out.println("Producto que ofrece: No especificado");
+        }
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
@@ -40,4 +54,6 @@ public class Proveedor extends Persona {
                 "Productos: " + producto +
                 '}';
     }
+
+
 }

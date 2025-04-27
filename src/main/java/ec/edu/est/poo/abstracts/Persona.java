@@ -70,4 +70,6 @@ public class Persona {
                 ", Teléfono: '" + telefono + '\'' +
                 '}';
     }
+    public abstract void mostrarInfo();
+
 }

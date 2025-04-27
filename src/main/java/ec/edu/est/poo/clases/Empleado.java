@@ -52,4 +52,16 @@ public class Empleado extends Persona {
                 ", Departamento: '" + departamento + '\'' +
                 '}';
     }
+
+    @Override
+    public void mostrarInfo() {
+        System.out.println("Empleado:");
+        System.out.println("ID: " + getId());
+        System.out.println("Nombre: " + getNombre());
+        System.out.println("Dirección: " + getDireccion());
+        System.out.println("Teléfono: " + getTelefono());
+        System.out.println("Cargo: " + cargo);
+        System.out.println("Departamento: " + departamento);
+    }
+
 }
