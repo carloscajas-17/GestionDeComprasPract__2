@@ -2,23 +2,25 @@ package ec.edu.est.poo.clases;
 
 import ec.edu.est.poo.abstracts.Persona;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Proveedor extends Persona {
-    private Producto producto;
+    private List<Producto> producto;
     public Proveedor() {
 
     }
 
-    public Proveedor(int id, String nombre, String direccion, String telefono, Producto producto) {
+    public Proveedor(int id, String nombre, String direccion, String telefono) {
         super(id, nombre, direccion, telefono);
-        this.producto = producto;
+        this.producto = new ArrayList<>();
     }
-    public Producto getProducto() {
-        return producto;
-    }
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+
+    public void registrarProducto(int codigo, String nombre, String descripcion, double precio) {
+        Producto newProducto = new Producto(codigo, nombre, descripcion, precio);
+        producto.add(newProducto);
+        System.out.println("Producto Registrado: " + newProducto);
     }
     @Override
     public boolean equals(Object o) {

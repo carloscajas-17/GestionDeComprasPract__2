@@ -2,7 +2,7 @@ package ec.edu.est.poo.abstracts;
 
 import java.util.Objects;
 
-public abstract class Persona {
+public class Persona {
     private int id;
     private  String nombre;
     private String direccion;
