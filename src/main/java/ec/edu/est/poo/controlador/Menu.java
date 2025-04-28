@@ -2,19 +2,18 @@ package ec.edu.est.poo.controlador;
 
 import ec.edu.est.poo.clases.*;
 import ec.edu.est.poo.enums.EstadoSolicitud;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
-    private final Scanner scanner = new Scanner(System.in);
-    private final List<Empleado> empleados = new ArrayList<>();
-    private final List<Proveedor> proveedores = new ArrayList<>();
-    private final List<Producto> productos = new ArrayList<>();
-    private final List<SolicitudCompra> solicitudes = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
+    private List<Empleado> empleados = new ArrayList<>();
+    private List<Proveedor> proveedores = new ArrayList<>();
+    private List<Producto> productos = new ArrayList<>();
+    private List<SolicitudCompra> solicitudes = new ArrayList<>();
 
-    private int leerEntero() {
+    public int leerEntero() {
         while (!scanner.hasNextInt()) {
             System.out.println("Por favor, ingrese un número válido.");
             scanner.next();
@@ -27,44 +26,85 @@ public class Menu {
     public void menuPrincipal() {
         int opcion;
         do {
-            System.out.println("\n--- MENÚ PRINCIPAL ---");
-            System.out.println("1. Gestionar Empleados");
-            System.out.println("2. Gestionar Proveedores");
-            System.out.println("3. Gestionar Productos");
-            System.out.println("4. Gestionar Solicitudes de Compra");
-            System.out.println("0. Salir");
+            System.out.println("\n--- SISTEMA DE GESTIÓN DE COMPRAS ERP ---");
+            System.out.println("1. Registrar proveedor");
+            System.out.println("2. Registrar empleado");
+            System.out.println("3. Registrar producto");
+            System.out.println("4. Registrar solicitud de compra");
+            System.out.println("5. Listar proveedores");
+            System.out.println("6. Listar empleados");
+            System.out.println("7. Listar productos");
+            System.out.println("8. Listar solicitudes de compra");
+            System.out.println("9. Buscar proveedor por ID");
+            System.out.println("10. Buscar empleado por nombre");
+            System.out.println("11. Buscar producto por nombre");
+            System.out.println("12. Buscar solicitud por número");
+            System.out.println("13. Aprobar / Rechazar solicitud de compra");
+            System.out.println("14. Calcular total de una solicitud");
+            System.out.println("15. Salir");
+
             System.out.print("Seleccione una opción: ");
             opcion = leerEntero();
             switch (opcion) {
-                case 1 -> menuEmpleados();
-                case 2 -> menuProveedores();
-                case 3 -> menuProductos();
-                case 4 -> menuSolicitudes();
-                case 0 -> System.out.println("Saliendo...");
+                case 1 -> registrarProveedor();
+                case 2 -> registrarEmpleado();
+                case 3 -> registrarProducto();
+                case 4 -> registrarSolicitud();
+                case 5 -> listarProveedores();
+                case 6 -> listarEmpleados();
+                case 7 -> listarProductos();
+                case 8 -> listarSolicitudes();
+                case 9 -> buscarProveedorPorID();
+                case 10 -> buscarEmpleadoPorNombre();
+                case 11 -> buscarProductoPorNombre();
+                case 12 -> buscarSolicitudPorNumero();
+                case 13 -> aprobarRechazarSolicitud();
+                case 14 -> calcularTotalSolicitud();
+                case 15 -> System.out.println("Saliendo...");
                 default -> System.out.println("Opción inválida.");
             }
-        } while (opcion != 0);
+        } while (opcion != 15);
     }
 
-    private void menuEmpleados() {
-        int opcion;
-        do {
-            System.out.println("\n--- GESTIÓN DE EMPLEADOS ---");
-            System.out.println("1. Registrar Empleado");
-            System.out.println("2. Listar Empleados");
-            System.out.println("0. Volver al Menú Principal");
-            System.out.print("Seleccione una opción: ");
-            opcion = leerEntero();
-            switch (opcion) {
-                case 1 -> registrarEmpleado();
-                case 2 -> listarEmpleados();
-                case 0 -> System.out.println("Regresando al menú principal...");
-                default -> System.out.println("Opción inválida.");
-            }
-        } while (opcion != 0);
+    public void registrarProveedor() {
+        System.out.print("ID: ");
+        int id = leerEntero();
+        System.out.print("Nombre: ");
+        String nombre = scanner.nextLine();
+        System.out.print("Dirección: ");
+        String direccion = scanner.nextLine();
+        System.out.print("Teléfono: ");
+        String telefono = scanner.nextLine();
+        System.out.println("Productos ofrecidos por el proveedor:");
+        Producto producto = crearProducto();
+
+        Proveedor proveedor = new Proveedor(id, nombre, direccion, telefono, producto);
+        proveedor.registrarProducto(producto.getCodigo(), producto.getNombre(), producto.getDescripcion(), producto.getPrecio());
+        proveedores.add(proveedor);
+        System.out.println("Proveedor registrado exitosamente.");
     }
 
-    private void registrarEmpleado() {
+    public void registrarProducto() {
+        Producto producto = crearProducto();
+        productos.add(producto);
+        System.out.println("Producto registrado exitosamente.");
+    }
+
+    public Producto crearProducto() {
+        System.out.print("Código: ");
+        int codigo = leerEntero();
+        System.out.print("Nombre: ");
+        String nombre = scanner.nextLine();
+        System.out.print("Descripción: ");
+        String descripcion = scanner.nextLine();
+        System.out.print("Precio: ");
+        double precio = scanner.nextDouble();
+        scanner.nextLine();
+
+        return new Producto(codigo, nombre, descripcion, precio);
+    }
+
+    public void registrarEmpleado() {
         System.out.print("ID: ");
         int id = leerEntero();
         System.out.print("Nombre: ");
@@ -83,140 +123,13 @@ public class Menu {
         System.out.println("Empleado registrado exitosamente.");
     }
 
-    private void listarEmpleados() {
-        if (empleados.isEmpty()) {
-            System.out.println("No hay empleados registrados.");
-        } else {
-            for (Empleado e : empleados) {
-                e.mostrarInfo();
-                System.out.println();
-            }
-        }
-    }
-
-    private void menuProveedores() {
-        int opcion;
-        do {
-            System.out.println("\n--- GESTIÓN DE PROVEEDORES ---");
-            System.out.println("1. Registrar Proveedor");
-            System.out.println("2. Listar Proveedores");
-            System.out.println("0. Volver al Menú Principal");
-            System.out.print("Seleccione una opción: ");
-            opcion = leerEntero();
-            switch (opcion) {
-                case 1 -> registrarProveedor();
-                case 2 -> listarProveedores();
-                case 0 -> System.out.println("Regresando al menú principal...");
-                default -> System.out.println("Opción inválida.");
-            }
-        } while (opcion != 0);
-    }
-
-    private void registrarProveedor() {
-        System.out.print("ID: ");
-        int id = leerEntero();
-        System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
-        System.out.print("Dirección: ");
-        String direccion = scanner.nextLine();
-        System.out.print("Teléfono: ");
-        String telefono = scanner.nextLine();
-
-        System.out.println("Ahora registre el producto que ofrece el proveedor:");
-        Producto producto = crearProducto();
-
-        Proveedor proveedor = new Proveedor(id, nombre, direccion, telefono, producto);
-        proveedores.add(proveedor);
-        System.out.println("Proveedor registrado exitosamente.");
-    }
-
-    private void listarProveedores() {
-        if (proveedores.isEmpty()) {
-            System.out.println("No hay proveedores registrados.");
-        } else {
-            for (Proveedor p : proveedores) {
-                p.mostrarInfo();
-                System.out.println();
-            }
-        }
-    }
-
-    private void menuProductos() {
-        int opcion;
-        do {
-            System.out.println("\n--- GESTIÓN DE PRODUCTOS ---");
-            System.out.println("1. Registrar Producto");
-            System.out.println("2. Listar Productos");
-            System.out.println("0. Volver al Menú Principal");
-            System.out.print("Seleccione una opción: ");
-            opcion = leerEntero();
-            switch (opcion) {
-                case 1 -> registrarProducto();
-                case 2 -> listarProductos();
-                case 0 -> System.out.println("Regresando al menú principal...");
-                default -> System.out.println("Opción inválida.");
-            }
-        } while (opcion != 0);
-    }
-
-    private void registrarProducto() {
-        Producto producto = crearProducto();
-        productos.add(producto);
-        System.out.println("Producto registrado exitosamente.");
-    }
-
-    private Producto crearProducto() {
-        System.out.print("Código: ");
-        int codigo = leerEntero();
-        System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
-        System.out.print("Descripción: ");
-        String descripcion = scanner.nextLine();
-        System.out.print("Precio: ");
-        double precio = scanner.nextDouble();
-        scanner.nextLine();
-
-        return new Producto(codigo, nombre, descripcion, precio);
-    }
-
-    private void listarProductos() {
-        if (productos.isEmpty()) {
-            System.out.println("No hay productos registrados.");
-        } else {
-            for (Producto p : productos) {
-                System.out.println(p);
-                System.out.println();
-            }
-        }
-    }
-
-    private void menuSolicitudes() {
-        int opcion;
-        do {
-            System.out.println("\n--- GESTIÓN DE SOLICITUDES DE COMPRA ---");
-            System.out.println("1. Registrar Solicitud");
-            System.out.println("2. Listar Solicitudes");
-            System.out.println("0. Volver al Menú Principal");
-            System.out.print("Seleccione una opción: ");
-            opcion = leerEntero();
-            switch (opcion) {
-                case 1 -> registrarSolicitud();
-                case 2 -> listarSolicitudes();
-                case 0 -> System.out.println("Regresando al menú principal...");
-                default -> System.out.println("Opción inválida.");
-            }
-        } while (opcion != 0);
-    }
-
-    private void registrarSolicitud() {
+    public void registrarSolicitud() {
         System.out.print("ID de la solicitud: ");
         int id = leerEntero();
         System.out.print("Departamento solicitante: ");
         String departamento = scanner.nextLine();
         EstadoSolicitud estado = EstadoSolicitud.EN_REVISION;
-
         List<DetalleCompra> detalles = new ArrayList<>();
-
         String continuar;
         do {
             System.out.println("\nAñadir producto a la solicitud:");
@@ -233,14 +146,139 @@ public class Menu {
         System.out.println("Solicitud registrada exitosamente.");
     }
 
-    private void listarSolicitudes() {
+    public void listarProveedores() {
+        if (proveedores.isEmpty()) {
+            System.out.println("No hay proveedores registrados.");
+        } else {
+            System.out.println("Lista de Proveedores");
+            for (Proveedor proveedor : proveedores) {
+                proveedor.mostrarInfo();
+                System.out.println();
+            }
+        }
+    }
+
+    public void listarEmpleados() {
+        if (empleados.isEmpty()) {
+            System.out.println("No hay empleados registrados.");
+        } else {
+            for (Empleado empleado : empleados) {
+                System.out.println("Lista de empleados");
+                empleado.mostrarInfo();
+                System.out.println();
+            }
+        }
+    }
+
+    public void listarProductos() {
+        if (productos.isEmpty()) {
+            System.out.println("No hay productos registrados.");
+        } else {
+            for (Producto producto : productos) {
+                System.out.println(producto);
+                System.out.println();
+            }
+        }
+    }
+
+    public void listarSolicitudes() {
         if (solicitudes.isEmpty()) {
             System.out.println("No hay solicitudes registradas.");
         } else {
-            for (SolicitudCompra s : solicitudes) {
-                System.out.println(s);
+            System.out.println("Lista de solicitudes");
+            for (SolicitudCompra solicitudCompra : solicitudes) {
+                System.out.println(solicitudCompra);
                 System.out.println();
             }
+        }
+    }
+
+    public void buscarProveedorPorID() {
+        System.out.print("Ingrese el ID del proveedor a buscar: ");
+        String id = scanner.nextLine();
+        boolean find = false;
+        for(Proveedor proveedor : proveedores) {
+            if(proveedor.coincideCon(id)) {
+                System.out.println("Proveedor encontrado: " + proveedor);
+                find = true;
+                break;
+            }
+        }
+        if(!find) {
+            System.out.println("Proveedor no encontrado");
+        }
+    }
+
+    public void buscarEmpleadoPorNombre() {
+        System.out.print("Ingrese el nombre del empleado a buscar: ");
+        String nombre = scanner.nextLine();
+        boolean find = false;
+        for(Empleado empleado : empleados) {
+            if(empleado.coincideCon(nombre)) {
+                System.out.println("Empleado encontrado: " + empleado);
+                find = true;
+                break;
+            }
+        }
+        if(!find) {
+            System.out.println("Empleado no encontrado");
+        }
+    }
+
+    public void buscarProductoPorNombre() {
+        System.out.print("Ingrese el nombre del producto a buscar: ");
+        String nombre = scanner.nextLine();
+        boolean find = false;
+        for(Producto producto : productos) {
+            if(producto.coincideCon(nombre)) {
+                System.out.println("Producto encontrado: " + producto);
+                find = true;
+                break;
+            }
+        }
+        if(!find) {
+            System.out.println("Producto no encontrado");
+        }
+    }
+
+    public SolicitudCompra buscarSolicitudPorNumero() {
+        System.out.print("Ingrese el número de solicitud a buscar: ");
+        int id = leerEntero();
+        String idString = String.valueOf(id);
+        for (SolicitudCompra solicitudCompra : solicitudes) {
+            if (solicitudCompra.coincideCon(idString)) {
+                System.out.println("Solicitud encontrada: " + solicitudCompra);
+                return solicitudCompra;
+            }
+        }
+        System.out.println("Solicitud no encontrada");
+        return null;
+    }
+
+    public void aprobarRechazarSolicitud() {
+        SolicitudCompra solicitudFind = buscarSolicitudPorNumero();
+        if(solicitudFind != null) {
+            System.out.print("¿Desea aprobar(A) o rechazar(R) la solicitud? ");
+            String opcion = scanner.nextLine().toUpperCase();
+            if(opcion.equalsIgnoreCase("A")) {
+                solicitudFind.aceptarSolicitud();
+            } else if (opcion.equalsIgnoreCase("R")) {
+                solicitudFind.rechazarSolicitud();
+            } else {
+                System.out.println("Opción inválida");
+            }
+        } else {
+            System.out.println("Solicitud no encontrada");
+        }
+    }
+
+    public void calcularTotalSolicitud() {
+        SolicitudCompra solicitudFind = buscarSolicitudPorNumero();
+        if(solicitudFind != null) {
+            double total = solicitudFind.calcularTotal();
+            System.out.println("El total de la solicitud es: " + total);
+        } else {
+            System.out.println("Solicitud no encontrada");
         }
     }
 }

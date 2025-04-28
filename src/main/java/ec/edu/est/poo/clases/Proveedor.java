@@ -1,39 +1,41 @@
 package ec.edu.est.poo.clases;
 
 import ec.edu.est.poo.abstracts.Persona;
+import ec.edu.est.poo.interfaces.Buscable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Proveedor extends Persona {
-    private List<Producto> producto;
+public class Proveedor extends Persona implements Buscable {
+    private List<Producto> productos;
     public Proveedor() {
 
     }
 
-    public Proveedor(int id, String nombre, String direccion, String telefono) {
+    public Proveedor(int id, String nombre, String direccion, String telefono, Producto producto) {
         super(id, nombre, direccion, telefono);
-        this.producto = new ArrayList<>();
+        this.productos = new ArrayList<>();
+    }
+
+    public List<Producto> getProducto() {
+        return productos;
     }
 
     public void registrarProducto(int codigo, String nombre, String descripcion, double precio) {
         Producto newProducto = new Producto(codigo, nombre, descripcion, precio);
-        producto.add(newProducto);
-        System.out.println("Producto Registrado: " + newProducto);
+        productos.add(newProducto);
     }
+
     @Override
     public void mostrarInfo() {
-        System.out.println("Proveedor:");
-        System.out.println("ID: " + getId());
-        System.out.println("Nombre: " + getNombre());
-        System.out.println("Dirección: " + getDireccion());
-        System.out.println("Teléfono: " + getTelefono());
-        if (producto != null) {
-            System.out.println("Producto que ofrece: " + producto.getNombre());
-        } else {
-            System.out.println("Producto que ofrece: No especificado");
-        }
+        super.mostrarInfo();
+        System.out.println("Productos: " + productos);
+    }
+
+    @Override
+    public boolean coincideCon(String criterio) {
+        return  String.valueOf(getId()).equals(criterio);
     }
 
     @Override
@@ -41,19 +43,17 @@ public class Proveedor extends Persona {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Proveedor proveedor = (Proveedor) o;
-        return Objects.equals(producto, proveedor.producto);
+        return Objects.equals(productos, proveedor.productos);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), producto);
+        return Objects.hash(super.hashCode(), productos);
     }
 
     @Override
     public String toString() {
-        return "Proveedor{" +
-                "Productos: " + producto +
+        return super.toString() + "\nProveedor{" +
+                "Productos: " + productos +
                 '}';
     }
-
-
 }
