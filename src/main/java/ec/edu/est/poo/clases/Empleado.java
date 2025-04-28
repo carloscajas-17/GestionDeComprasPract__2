@@ -2,11 +2,12 @@ package ec.edu.est.poo.clases;
 
 import ec.edu.est.poo.abstracts.Persona;
 import ec.edu.est.poo.enums.EstadoSolicitud;
+import ec.edu.est.poo.interfaces.Buscable;
 
 import java.util.List;
 import java.util.Objects;
 
-public class Empleado extends Persona {
+public class Empleado extends Persona implements Buscable {
     private  String cargo;
     private String departamento;
     public Empleado(int id, String nombre, String direccion, String telefono, String cargo, String departamento) {
@@ -17,6 +18,7 @@ public class Empleado extends Persona {
     public Empleado() {
 
     }
+
     public String getCargo() {
         return cargo;
     }
@@ -34,6 +36,18 @@ public class Empleado extends Persona {
         System.out.println("Solicitud de compra creada: " + solicitudCompra);
         return solicitudCompra;
     }
+
+    @Override
+    public void mostrarInfo() {
+        super.mostrarInfo();
+        System.out.println("Cargo: " + cargo);
+        System.out.println("Departamento: " + departamento);
+    }
+
+    public boolean coincideCon(String criterio) {
+        return getNombre().equalsIgnoreCase(criterio);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -45,23 +59,12 @@ public class Empleado extends Persona {
     public int hashCode() {
         return Objects.hash(super.hashCode(), cargo, departamento);
     }
+
     @Override
     public String toString() {
-        return "Empleado{" +
-                "Cargo: '" + cargo + '\'' +
-                ", Departamento: '" + departamento + '\'' +
+        return super.toString() +  "\nEmpleado{" +
+                "cargo='" + cargo + '\'' +
+                ", departamento='" + departamento + '\'' +
                 '}';
     }
-
-    @Override
-    public void mostrarInfo() {
-        System.out.println("Empleado:");
-        System.out.println("ID: " + getId());
-        System.out.println("Nombre: " + getNombre());
-        System.out.println("Dirección: " + getDireccion());
-        System.out.println("Teléfono: " + getTelefono());
-        System.out.println("Cargo: " + cargo);
-        System.out.println("Departamento: " + departamento);
-    }
-
 }
