@@ -18,6 +18,12 @@ Esta práctica se basa en desarrolar un pequeño programa para facilitar la admi
 
 ------------
 
+### 🖼️ **Diagrama**
+
+<img width="1000" alt="dia" src="https://github.com/user-attachments/assets/572ce168-1558-4848-b468-bd7321674f1f" />
+
+------------
+
 ### 💻 **Uso**
 Al iniciar la aplicación, se presentará un menú con varias opciones.
 Seleccione una opción ingresando el número correspondiente.
