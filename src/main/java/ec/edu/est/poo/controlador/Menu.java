@@ -152,7 +152,7 @@ public class Menu {
         } else {
             System.out.println("Lista de Proveedores");
             for (Proveedor proveedor : proveedores) {
-                proveedor.mostrarInfo();
+                proveedor.toString();
                 System.out.println();
             }
         }
@@ -164,7 +164,7 @@ public class Menu {
         } else {
             for (Empleado empleado : empleados) {
                 System.out.println("Lista de empleados");
-                empleado.mostrarInfo();
+                empleado.toString();
                 System.out.println();
             }
         }

@@ -2,7 +2,7 @@ package ec.edu.est.poo.abstracts;
 
 import java.util.Objects;
 
-public abstract class Persona {
+public  class Persona {
     private int id;
     private  String nombre;
     private String direccion;
@@ -47,13 +47,6 @@ public abstract class Persona {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
-    }
-
-    public void mostrarInfo() {
-        System.out.println("ID: " + id);
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Dirección: " + direccion);
-        System.out.println("Teléfono: " + telefono);
     }
 
     @Override

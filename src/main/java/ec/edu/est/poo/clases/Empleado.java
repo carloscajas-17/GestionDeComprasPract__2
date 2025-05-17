@@ -37,13 +37,6 @@ public class Empleado extends Persona implements Buscable {
         return solicitudCompra;
     }
 
-    @Override
-    public void mostrarInfo() {
-        super.mostrarInfo();
-        System.out.println("Cargo: " + cargo);
-        System.out.println("Departamento: " + departamento);
-    }
-
     public boolean coincideCon(String criterio) {
         return getNombre().equalsIgnoreCase(criterio);
     }

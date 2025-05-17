@@ -28,12 +28,6 @@ public class Proveedor extends Persona implements Buscable {
     }
 
     @Override
-    public void mostrarInfo() {
-        super.mostrarInfo();
-        System.out.println("Productos: " + productos);
-    }
-
-    @Override
     public boolean coincideCon(String criterio) {
         return  String.valueOf(getId()).equals(criterio);
     }
