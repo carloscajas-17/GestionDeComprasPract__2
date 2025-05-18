@@ -7,7 +7,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class VentanaMenu extends Frame implements ActionListener {
-    private Panel general;
     private Panel pSuperior;
     private Panel pCentral;
     private Panel pInferior;
@@ -19,29 +18,33 @@ public class VentanaMenu extends Frame implements ActionListener {
 
     public VentanaMenu() {
         setTitle("Gestión de Compras");
-        setSize(400, 400);
+        setSize(400, 500);
         setLayout(new BorderLayout());
         setBackground(Color.LIGHT_GRAY);
         setLocationRelativeTo(null);
 
-        general = new Panel(new BorderLayout());
+        Panel general = new Panel();
+        general.setLayout(new BorderLayout(15, 15));
+
         pSuperior = new Panel();
-        pCentral = new Panel();
-        pCentral.setLayout(new GridLayout(0,1,0,10));
+        pCentral = new Panel(new GridLayout(3, 1));
         pInferior = new Panel();
 
-
         btnEmpleado = new Button("Empleado");
-        btnEmpleado.setFont(new Font("SansSerif", Font.PLAIN, 18));
-
         btnProveedor = new Button("Proveedor");
-        btnProveedor.setFont(new Font("SansSerif", Font.PLAIN, 18));
-
         btnSolicitud = new Button("Solicitud");
-        btnSolicitud.setFont(new Font("SansSerif", Font.PLAIN, 18));
-
         btnSalir = new Button("Cerrar");
-        btnSalir.setFont(new Font("SansSerif", Font.PLAIN, 18));
+
+        btnEmpleado.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        btnProveedor.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        btnSolicitud.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        btnSalir.setFont(new Font("SansSerif", Font.PLAIN, 16));
+
+        Dimension btnSize = new Dimension(100, 40);
+        btnEmpleado.setPreferredSize(btnSize);
+        btnProveedor.setPreferredSize(btnSize);
+        btnSolicitud.setPreferredSize(btnSize);
+
         btnSalir.addActionListener(this);
 
         titulo = new Label("GESTION DE COMPRAS", Label.CENTER);
@@ -50,11 +53,9 @@ public class VentanaMenu extends Frame implements ActionListener {
 
         pSuperior.add(titulo);
 
-        pCentral.add(new Label(""));
         pCentral.add(btnEmpleado);
         pCentral.add(btnProveedor);
         pCentral.add(btnSolicitud);
-        pCentral.add(new Label(""));
 
         pInferior.add(btnSalir);
 
