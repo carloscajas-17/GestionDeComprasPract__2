@@ -1,4 +1,4 @@
-package ec.edu.est.poo.abstracts;
+package ec.edu.est.poo.modelos;
 
 import java.util.Objects;
 
@@ -7,12 +7,14 @@ public  class Persona {
     private  String nombre;
     private String direccion;
     private String telefono;
+
     public Persona(int id, String nombre, String direccion, String telefono) {
         this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
     }
+
     public Persona() {
 
     }

@@ -14,6 +14,7 @@ public class VentanaMenu extends Frame implements ActionListener {
     private Button btnEmpleado;
     private Button btnProveedor;
     private Button btnSolicitud;
+    private Button btnProducto;
     private Button btnSalir;
 
     public VentanaMenu() {
@@ -27,23 +28,20 @@ public class VentanaMenu extends Frame implements ActionListener {
         general.setLayout(new BorderLayout(15, 15));
 
         pSuperior = new Panel();
-        pCentral = new Panel(new GridLayout(3, 1));
+        pCentral = new Panel(new GridLayout(4, 1));
         pInferior = new Panel();
 
         btnEmpleado = new Button("Empleado");
         btnProveedor = new Button("Proveedor");
         btnSolicitud = new Button("Solicitud");
+        btnProducto = new Button("Productos");
         btnSalir = new Button("Cerrar");
 
         btnEmpleado.setFont(new Font("SansSerif", Font.PLAIN, 16));
         btnProveedor.setFont(new Font("SansSerif", Font.PLAIN, 16));
         btnSolicitud.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        btnProducto.setFont(new Font("SansSerif", Font.PLAIN, 16));
         btnSalir.setFont(new Font("SansSerif", Font.PLAIN, 16));
-
-        Dimension btnSize = new Dimension(100, 40);
-        btnEmpleado.setPreferredSize(btnSize);
-        btnProveedor.setPreferredSize(btnSize);
-        btnSolicitud.setPreferredSize(btnSize);
 
         btnSalir.addActionListener(this);
 
@@ -56,6 +54,7 @@ public class VentanaMenu extends Frame implements ActionListener {
         pCentral.add(btnEmpleado);
         pCentral.add(btnProveedor);
         pCentral.add(btnSolicitud);
+        pCentral.add(btnProducto);
 
         pInferior.add(btnSalir);
 
@@ -72,6 +71,14 @@ public class VentanaMenu extends Frame implements ActionListener {
                 System.exit(0);
             }
         });
+
+        btnEmpleado.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaEmpleado ventanaEmpleado = new VentanaEmpleado();
+                ventanaEmpleado.setVisible(true);
+            }
+        });
     }
 
     @Override
@@ -81,4 +88,3 @@ public class VentanaMenu extends Frame implements ActionListener {
         }
     }
 }
-

@@ -1,7 +1,4 @@
-package ec.edu.est.poo.clases;
-
-import ec.edu.est.poo.abstracts.Persona;
-import ec.edu.est.poo.interfaces.Buscable;
+package ec.edu.est.poo.modelos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +36,7 @@ public class Proveedor extends Persona implements Buscable {
         Proveedor proveedor = (Proveedor) o;
         return Objects.equals(productos, proveedor.productos);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), productos);

@@ -1,11 +1,8 @@
 package ec.edu.est.poo.vista;
 
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-public class VentanaEmpleado extends Frame {
-
+public class VentanaProveedor extends Frame {
     private Panel pSuperior;
     private Panel pCentral;
     private Panel pInferior;
@@ -19,59 +16,48 @@ public class VentanaEmpleado extends Frame {
     private Label lbNombre;
     private Label lbDireccion;
     private Label lbTelefono;
-    private Label lbCargo;
-    private Label lbDepartamento;
+    private Label lbProductos;
 
     private TextField txtMostrar;
     private TextField txtId;
     private TextField txtNombre;
     private TextField txtDireccion;
     private TextField txtTelefono;
-    private TextField txtCargo;
-    private TextField txtDepartamento;
+    private TextField txtProductos;
 
-    public VentanaEmpleado() {
-        setTitle("Menú de Empleados");
+    public VentanaProveedor() {
+        setTitle("Ventana Proveedor");
         setSize(500, 600);
         setLayout(new BorderLayout());
         setBackground(Color.LIGHT_GRAY);
         setLocationRelativeTo(null);
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                dispose();
-            }
-        });
-
         Panel pGeneral = new Panel();
 
         pSuperior = new Panel();
-        pCentral = new Panel(new GridLayout(8, 2));
+        pCentral = new Panel(new GridLayout(8 , 2));
         pInferior = new Panel(new GridLayout(2, 1));
 
-        titulo = new Label("MENU DE EMPLEADOS", Label.CENTER);
+        titulo = new Label("MENU DE PROVEEDORES", Label.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 28));
         titulo.setForeground(new Color(50, 50, 50));
 
-        btnAgregar = new Button("Agregar Empleado");
-        btnGuardar = new Button("Guardar Empleado");
-        btnListar = new Button("Listar Empleados");
+        btnAgregar = new Button("Agregar");
+        btnGuardar = new Button("Guardar");
+        btnListar = new Button("Listar");
 
         lbId = new Label("Id: ");
         lbNombre = new Label("Nombre: ");
         lbDireccion = new Label("Dirección: ");
         lbTelefono = new Label("Teléfono: ");
-        lbCargo = new Label("Cargo: ");
-        lbDepartamento = new Label("Departamento: ");
+        lbProductos = new Label("Productos: ");
 
         txtId = new TextField(15);
         txtNombre = new TextField(15);
         txtDireccion = new TextField(15);
         txtTelefono = new TextField(15);
-        txtCargo = new TextField(15);
-        txtDepartamento = new TextField(15);
-        txtMostrar = new TextField("Aquí se mostrará la lista de empleados...");
+        txtProductos = new TextField(15);
+        txtMostrar = new TextField("Aquí se mostrara la lista de proveedores...");
         txtMostrar.setEditable(false);
 
         pSuperior.add(titulo);
@@ -84,10 +70,8 @@ public class VentanaEmpleado extends Frame {
         pCentral.add(txtDireccion);
         pCentral.add(lbTelefono);
         pCentral.add(txtTelefono);
-        pCentral.add(lbCargo);
-        pCentral.add(txtCargo);
-        pCentral.add(lbDepartamento);
-        pCentral.add(txtDepartamento);
+        pCentral.add(lbProductos);
+        pCentral.add(txtProductos);
         pCentral.add(btnAgregar);
         pCentral.add(btnGuardar);
 
@@ -101,5 +85,6 @@ public class VentanaEmpleado extends Frame {
         add(pGeneral, BorderLayout.CENTER);
 
         setVisible(true);
+
     }
 }

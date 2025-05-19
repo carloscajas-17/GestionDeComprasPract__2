@@ -1,6 +1,4 @@
-package ec.edu.est.poo.clases;
-
-import ec.edu.est.poo.interfaces.Buscable;
+package ec.edu.est.poo.modelos;
 
 import java.util.Objects;
 
