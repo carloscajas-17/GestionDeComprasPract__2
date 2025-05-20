@@ -3,7 +3,7 @@ package ec.edu.est.poo.vista;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
-
+//import java.util.Vector
 import ec.edu.est.poo.modelos.*;
 
 public class VentanaListaSolicitud extends Frame {
