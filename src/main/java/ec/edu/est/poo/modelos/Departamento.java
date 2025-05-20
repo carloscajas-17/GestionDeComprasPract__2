@@ -12,7 +12,6 @@ public class Departamento {
     public Departamento(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
-        this.empleados = new ArrayList<>();
     }
 
     public Departamento() {
@@ -35,14 +34,6 @@ public class Departamento {
         this.nombre = nombre;
     }
 
-    public List<Empleado> getEmpleados() {
-        return empleados;
-    }
-
-    public void addEmpleado(Empleado empleado) {
-        empleados.add(empleado);
-        System.out.println("Empleado agregado al departamento: " + empleado.getNombre());
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -58,10 +49,7 @@ public class Departamento {
 
     @Override
     public String toString() {
-        return "Departamento{" +
-                "Id: " + id +
-                ", Nombre: '" + nombre + '\'' +
-                ", Empleados: " + empleados +
-                '}';
+        return "Id: " + getId() + "\n" +
+                ", Nombre: " + getNombre();
     }
 }

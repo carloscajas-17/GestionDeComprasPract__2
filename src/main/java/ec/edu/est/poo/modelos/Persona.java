@@ -65,7 +65,7 @@ public  class Persona {
 
     @Override
     public String toString() {
-        return super.toString() + "\nPersona{" +
+        return "Persona{" +
                 "Id: " + id +
                 ", Nombre: '" + nombre + '\'' +
                 ", Dirección: '" + direccion + '\'' +
