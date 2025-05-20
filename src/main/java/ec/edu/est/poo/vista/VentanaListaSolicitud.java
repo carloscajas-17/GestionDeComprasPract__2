@@ -124,10 +124,10 @@ public class VentanaListaSolicitud extends Frame {
         d.setVisible(true);
     }
 
-    private void actionPerformed(ActionEvent e) {
-        if (solicitudActual != null) {
-            VentanaProducto(solicitudActual);
-            cargarSolicitud(); // Refrescar al volver
-        }
-    }
+    //private void actionPerformed(ActionEvent e) {
+      //  if (solicitudActual != null) {
+        //    new VentanaProducto(solicitudActual);
+          //  cargarSolicitud();
+        //}
+    //}
 }
