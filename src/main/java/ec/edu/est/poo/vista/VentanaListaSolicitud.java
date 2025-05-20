@@ -1,19 +1,17 @@
 package ec.edu.est.poo.vista;
 
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 import ec.edu.est.poo.modelos.SolicitudCompra;
 
-public class VentanaListaSolicitudes  extends Frame{
-    private Frame frame;
+public class VentanaListaSolicitud extends Frame {
     private TextArea areaSolicitudes;
     private Button btnCerrar;
 
-    public VentanaListaSolicitudes(List<SolicitudCompra> solicitudes) {
-        frame = new Frame("Listado de Solicitudes");
-        frame.setLayout(new BorderLayout());
+    public VentanaListaSolicitud(List<SolicitudCompra> solicitudes) {
+        setTitle("Listado de Solicitudes");
+        setLayout(new BorderLayout());
 
         areaSolicitudes = new TextArea(20, 60);
         areaSolicitudes.setEditable(false);
@@ -23,18 +21,18 @@ public class VentanaListaSolicitudes  extends Frame{
         }
 
         btnCerrar = new Button("Cerrar");
-        btnCerrar.addActionListener(e -> frame.dispose());
+        btnCerrar.addActionListener(e -> dispose());
 
-        frame.add(areaSolicitudes, BorderLayout.CENTER);
-        frame.add(btnCerrar, BorderLayout.SOUTH);
+        add(areaSolicitudes, BorderLayout.CENTER);
+        add(btnCerrar, BorderLayout.SOUTH);
 
-        frame.addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                frame.dispose();
+                dispose();
             }
         });
 
-        frame.pack();
-        frame.setVisible(true);
+        pack();
+        setVisible(true);
     }
 }
