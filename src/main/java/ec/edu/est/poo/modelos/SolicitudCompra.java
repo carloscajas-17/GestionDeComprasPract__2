@@ -11,6 +11,7 @@ public class SolicitudCompra implements Calculable, Buscable {
 
     public SolicitudCompra(int id, String departamento, EstadoSolicitud estado, List<DetalleCompra> detalles) {
 
+
     }
 
     public SolicitudCompra(int id, Departamento departamento, EstadoSolicitud estado, List<DetalleCompra> productos) {

@@ -4,4 +4,7 @@ import java.awt.*;
 
 public class VentanaSolicitud extends Frame {
 
+
+
+
 }
