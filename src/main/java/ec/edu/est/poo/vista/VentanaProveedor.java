@@ -1,10 +1,16 @@
 package ec.edu.est.poo.vista;
 
+import ec.edu.est.poo.modelos.Producto;
+import ec.edu.est.poo.modelos.Proveedor;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VentanaProveedor extends Frame implements ActionListener {
     private Panel pSuperior;
@@ -24,7 +30,8 @@ public class VentanaProveedor extends Frame implements ActionListener {
     private Label lbTelefono;
     private Label lbProductos;
 
-    private TextField txtMostrar;
+    private TextArea txtMostrar;
+
     private TextField txtId;
     private TextField txtNombre;
     private TextField txtDireccion;
@@ -32,6 +39,7 @@ public class VentanaProveedor extends Frame implements ActionListener {
     private TextField txtProductos;
 
     private CardLayout cardLayout;
+    private List<Proveedor> listaProveedores = new ArrayList<>();
 
     public VentanaProveedor() {
         setTitle("Ventana Proveedor");
@@ -57,6 +65,8 @@ public class VentanaProveedor extends Frame implements ActionListener {
         pListado = new Panel(new BorderLayout());
         pInferior = new Panel(cardLayout);
 
+        pSuperior.setBackground(new Color(247, 249, 249));
+
         titulo = new Label("MENU DE PROVEEDORES", Label.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 28));
         titulo.setForeground(new Color(50, 50, 50));
@@ -77,7 +87,7 @@ public class VentanaProveedor extends Frame implements ActionListener {
         txtTelefono = new TextField(15);
         txtProductos = new TextField(15);
 
-        txtMostrar = new TextField("Aquí se mostrara la lista de proveedores...");
+        txtMostrar = new TextArea("Aquí se mostrara la lista de proveedores...", 5, 30);
         txtMostrar.setEditable(false);
 
         pListado.add(new Label("Aquí se mostrará a los proveedores"));
@@ -114,6 +124,7 @@ public class VentanaProveedor extends Frame implements ActionListener {
 
         btnAgregar.addActionListener(this);
         btnListar.addActionListener(this);
+        btnGuardar.addActionListener(this);
 
         cardLayout.show(pInferior, "Formulario");
     }
@@ -122,13 +133,58 @@ public class VentanaProveedor extends Frame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAgregar) {
             cardLayout.show(pInferior, "Agregar");
-            txtId.setText("");
-            txtNombre.setText("");
-            txtDireccion.setText("");
-            txtTelefono.setText("");
-            txtProductos.setText("");
-        } else if (e.getSource() == btnListar) {
+            limpiar();
+        } else if (e.getSource() == btnGuardar) {
+            guardarProveedor();
+        } else if(e.getSource() == btnListar) {
             cardLayout.show(pInferior, "Listado");
+            mostrarProveedores();
         }
     }
+
+    private void guardarProveedor() {
+        try {
+            int id = Integer.parseInt(txtId.getText());
+            String nombre = txtNombre.getText();
+            String direccion = txtDireccion.getText();
+            String telefono = txtTelefono.getText();
+            String productotxt = txtProductos.getText();
+            Producto producto = new Producto(0, productotxt, "", 0.0);
+            Proveedor newProveedor = new Proveedor(id, nombre, direccion, telefono, producto);
+
+            newProveedor.registrarProducto(producto.getCodigo(), producto.getNombre(), producto.getDescripcion(), producto.getPrecio()); // Registra el producto con el proveedor
+
+            listaProveedores.add(newProveedor);
+            JOptionPane.showMessageDialog(this, "Proveedor agregado",
+                    "Guardar", JOptionPane.INFORMATION_MESSAGE);
+            limpiar();
+            cardLayout.show(pInferior, "Listado");
+            mostrarProveedores();
+        } catch (NumberFormatException error) {
+            JOptionPane.showMessageDialog(this, "Error",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void mostrarProveedores() {
+        StringBuilder sb = new StringBuilder();
+        if (listaProveedores.isEmpty()) {
+            sb.append("No hay proveedores registrados.");
+        } else {
+            for (Proveedor proveedor : listaProveedores) {
+                sb.append(proveedor.toString());
+                sb.append("\n");
+            }
+            txtMostrar.setText(sb.toString());
+        }
+    }
+
+    private void limpiar() {
+        txtId.setText("");
+        txtNombre.setText("");
+        txtDireccion.setText("");
+        txtTelefono.setText("");
+        txtProductos.setText("");
+    }
+
 }

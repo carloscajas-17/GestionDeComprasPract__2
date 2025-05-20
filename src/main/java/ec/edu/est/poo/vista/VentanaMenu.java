@@ -1,10 +1,15 @@
 package ec.edu.est.poo.vista;
 
+import ec.edu.est.poo.modelos.Producto;
+import ec.edu.est.poo.modelos.SolicitudCompra;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VentanaMenu extends Frame implements ActionListener {
     private Panel pSuperior;
@@ -16,6 +21,8 @@ public class VentanaMenu extends Frame implements ActionListener {
     private Button btnSolicitud;
     private Button btnProducto;
     private Button btnSalir;
+    private List<Producto> listaProductos = new ArrayList<>();
+    private List<SolicitudCompra> solicitudCompras = new ArrayList<>();
 
     public VentanaMenu() {
         setTitle("Gestión de Compras");
@@ -83,8 +90,13 @@ public class VentanaMenu extends Frame implements ActionListener {
         btnSolicitud.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VentanaSolicitud ventanaSolicitud = new VentanaSolicitud();
-                ventanaSolicitud.setVisible(true);
+                VentanaListaSolicitud ventanaListaSolicitud = new VentanaListaSolicitud(solicitudCompras);
+            }
+        });
+        btnProducto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaProducto ventanaProducto = new VentanaProducto(listaProductos);
             }
         });
     }

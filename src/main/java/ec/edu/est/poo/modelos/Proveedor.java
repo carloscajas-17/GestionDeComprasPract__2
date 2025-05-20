@@ -44,8 +44,6 @@ public class Proveedor extends Persona implements Buscable {
 
     @Override
     public String toString() {
-        return super.toString() + "\nProveedor{" +
-                "Productos: " + productos +
-                '}';
+        return super.toString() + "\nProductos: " + productos;
     }
 }

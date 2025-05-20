@@ -31,7 +31,8 @@ public class VentanaEmpleado extends Frame implements ActionListener {
     private Label lbCargo;
     private Label lbDepartamento;
 
-    private TextField txtMostrar;
+    private TextArea txtMostrar;
+
     private TextField txtId;
     private TextField txtNombre;
     private TextField txtDireccion;
@@ -66,6 +67,8 @@ public class VentanaEmpleado extends Frame implements ActionListener {
         pListado = new Panel(new BorderLayout());
         pInferior = new Panel(cardLayout);
 
+        pSuperior.setBackground(new Color(247, 249, 249));
+
         titulo = new Label("MENU DE EMPLEADOS", Label.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 28));
         titulo.setForeground(new Color(50, 50, 50));
@@ -88,7 +91,7 @@ public class VentanaEmpleado extends Frame implements ActionListener {
         txtCargo = new TextField(15);
         txtDepartamento = new TextField(15);
 
-        txtMostrar = new TextField("Aquí se mostrará la lista de empleados...");
+        txtMostrar = new TextArea("Aquí se mostrará la lista de empleados...", 5, 30);
         txtMostrar.setEditable(false);
 
         pListado.add(new Label("Aquí se mostrará a los empleados", Label.CENTER));
