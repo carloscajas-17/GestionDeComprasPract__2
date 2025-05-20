@@ -1,6 +1,5 @@
 package ec.edu.est.poo.modelos;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,6 +49,6 @@ public class Departamento {
     @Override
     public String toString() {
         return "Id: " + getId() + "\n" +
-                ", Nombre: " + getNombre();
+                "Nombre: " + getNombre();
     }
 }

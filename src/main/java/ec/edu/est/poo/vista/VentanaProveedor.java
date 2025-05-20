@@ -30,7 +30,8 @@ public class VentanaProveedor extends Frame implements ActionListener {
     private Label lbTelefono;
     private Label lbProductos;
 
-    private TextField txtMostrar;
+    private TextArea txtMostrar;
+
     private TextField txtId;
     private TextField txtNombre;
     private TextField txtDireccion;
@@ -64,6 +65,8 @@ public class VentanaProveedor extends Frame implements ActionListener {
         pListado = new Panel(new BorderLayout());
         pInferior = new Panel(cardLayout);
 
+        pSuperior.setBackground(new Color(247, 249, 249));
+
         titulo = new Label("MENU DE PROVEEDORES", Label.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 28));
         titulo.setForeground(new Color(50, 50, 50));
@@ -84,7 +87,7 @@ public class VentanaProveedor extends Frame implements ActionListener {
         txtTelefono = new TextField(15);
         txtProductos = new TextField(15);
 
-        txtMostrar = new TextField("Aquí se mostrara la lista de proveedores...");
+        txtMostrar = new TextArea("Aquí se mostrara la lista de proveedores...", 5, 30);
         txtMostrar.setEditable(false);
 
         pListado.add(new Label("Aquí se mostrará a los proveedores"));
