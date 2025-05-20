@@ -29,6 +29,7 @@ public class VentanaEmpleado extends Frame implements ActionListener {
     private Label lbDireccion;
     private Label lbTelefono;
     private Label lbCargo;
+    private Label lbIdDep;
     private Label lbDepartamento;
 
     private TextArea txtMostrar;
@@ -38,6 +39,7 @@ public class VentanaEmpleado extends Frame implements ActionListener {
     private TextField txtDireccion;
     private TextField txtTelefono;
     private TextField txtCargo;
+    private TextField txtIdDep;
     private TextField txtDepartamento;
 
     private CardLayout cardLayout;
@@ -63,7 +65,7 @@ public class VentanaEmpleado extends Frame implements ActionListener {
 
         pSuperior = new Panel();
         pCentral = new Panel(new FlowLayout(FlowLayout.CENTER));
-        pAgregar = new Panel(new GridLayout(7, 2, 10, 15));
+        pAgregar = new Panel(new GridLayout(8, 2, 10, 15));
         pListado = new Panel(new BorderLayout());
         pInferior = new Panel(cardLayout);
 
@@ -82,6 +84,7 @@ public class VentanaEmpleado extends Frame implements ActionListener {
         lbDireccion = new Label("Dirección: ");
         lbTelefono = new Label("Teléfono: ");
         lbCargo = new Label("Cargo: ");
+        lbIdDep = new Label("Id Departamento: ");
         lbDepartamento = new Label("Departamento: ");
 
         txtId = new TextField(15);
@@ -89,6 +92,7 @@ public class VentanaEmpleado extends Frame implements ActionListener {
         txtDireccion = new TextField(15);
         txtTelefono = new TextField(15);
         txtCargo = new TextField(15);
+        txtIdDep = new TextField(15);
         txtDepartamento = new TextField(15);
 
         txtMostrar = new TextArea("Aquí se mostrará la lista de empleados...", 5, 30);
@@ -112,6 +116,8 @@ public class VentanaEmpleado extends Frame implements ActionListener {
         pAgregar.add(txtTelefono);
         pAgregar.add(lbCargo);
         pAgregar.add(txtCargo);
+        pAgregar.add(lbIdDep);
+        pAgregar.add(txtIdDep);
         pAgregar.add(lbDepartamento);
         pAgregar.add(txtDepartamento);
         pAgregar.add(btnGuardar);
@@ -154,6 +160,7 @@ public class VentanaEmpleado extends Frame implements ActionListener {
         txtDireccion.setText("");
         txtTelefono.setText("");
         txtCargo.setText("");
+        txtIdDep.setText("");
         txtDepartamento.setText("");
     }
 
@@ -177,12 +184,12 @@ public class VentanaEmpleado extends Frame implements ActionListener {
             String direccion = txtDireccion.getText();
             String telefono = txtTelefono.getText();
             String cargo = txtCargo.getText();
+            int idDep = Integer.parseInt(txtIdDep.getText());
             String departamentoNombre = txtDepartamento.getText();
-            Departamento departamento = new Departamento(0, departamentoNombre);
+            Departamento departamento = new Departamento(idDep, departamentoNombre);
 
             Empleado nuevoEmpleado = new Empleado(id, nombre, direccion, telefono, cargo, departamento);
             listaEmpleados.add(nuevoEmpleado);
-
             JOptionPane.showMessageDialog(this, "Empleado guardado con éxito.", "Guardar", JOptionPane.INFORMATION_MESSAGE);
             limpiarFormulario();
             cardLayout.show(pInferior, "Listado");

@@ -48,7 +48,8 @@ public class Departamento {
 
     @Override
     public String toString() {
-        return "Id: " + getId() + "\n" +
+        return "\n" +
+                "Id: " + getId() + "\n" +
                 "Nombre: " + getNombre();
     }
 }
