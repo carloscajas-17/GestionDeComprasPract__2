@@ -54,10 +54,12 @@ public class Empleado extends Persona implements Buscable {
 
     @Override
     public String toString() {
-        return super.toString() + "\nEmpleado{" +
-                "Cargo: '" + cargo + '\'' +
-                ", Departamento: " + departamento +
-                '}';
+        return "Id: " + getId() + "\n" +
+                "Nombre: " + getNombre() + "\n" +
+                "Dirección: " + getDireccion() + "\n" +
+                "Teléfono: " + getTelefono() + "\n" +
+                "Cargo: " + getCargo() + "\n" +
+                "Departamento: " + getDepartamento();
     }
 
     @Override

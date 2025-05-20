@@ -21,14 +21,14 @@ public class VentanaMenu extends Frame implements ActionListener {
         setTitle("Gestión de Compras");
         setSize(400, 500);
         setLayout(new BorderLayout());
-        setBackground(Color.LIGHT_GRAY);
+        setBackground(new Color(174, 214, 241));
         setLocationRelativeTo(null);
 
         Panel general = new Panel();
-        general.setLayout(new BorderLayout(15, 15));
+        general.setLayout(new BorderLayout());
 
         pSuperior = new Panel();
-        pCentral = new Panel(new GridLayout(4, 1));
+        pCentral = new Panel(new GridLayout(4, 4));
         pInferior = new Panel();
 
         btnEmpleado = new Button("Empleado");
@@ -36,12 +36,6 @@ public class VentanaMenu extends Frame implements ActionListener {
         btnSolicitud = new Button("Solicitud");
         btnProducto = new Button("Productos");
         btnSalir = new Button("Cerrar");
-
-        btnEmpleado.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        btnProveedor.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        btnSolicitud.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        btnProducto.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        btnSalir.setFont(new Font("SansSerif", Font.PLAIN, 16));
 
         btnSalir.addActionListener(this);
 
@@ -77,6 +71,20 @@ public class VentanaMenu extends Frame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 VentanaEmpleado ventanaEmpleado = new VentanaEmpleado();
                 ventanaEmpleado.setVisible(true);
+            }
+        });
+        btnProveedor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaProveedor ventanaProveedor = new VentanaProveedor();
+                ventanaProveedor.setVisible(true);
+            }
+        });
+        btnSolicitud.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaSolicitud ventanaSolicitud = new VentanaSolicitud();
+                ventanaSolicitud.setVisible(true);
             }
         });
     }
