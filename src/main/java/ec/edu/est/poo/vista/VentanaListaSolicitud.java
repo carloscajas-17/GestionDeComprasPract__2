@@ -62,7 +62,7 @@ public class VentanaListaSolicitud extends Frame {
         // Listeners
         chSolicitudes.addItemListener(e -> cargarSolicitud());
         btnGuardar.addActionListener(e -> guardarCambios());
-        btnAgregarProducto.addActionListener(this::actionPerformed);
+        //btnAgregarProducto.addActionListener(this::actionPerformed);
 
         cargarSolicitud(); // Cargar primera solicitud
         addWindowListener(new WindowAdapter() {

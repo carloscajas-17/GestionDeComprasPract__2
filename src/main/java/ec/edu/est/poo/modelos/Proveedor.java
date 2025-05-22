@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class Proveedor extends Persona implements Buscable {
     private List<Producto> productos;
+
     public Proveedor() {
 
     }
@@ -44,6 +45,7 @@ public class Proveedor extends Persona implements Buscable {
 
     @Override
     public String toString() {
-        return super.toString() + "\nProductos: " + productos;
+        return super.toString() + "\n" +
+                "Productos: " + productos;
     }
 }

@@ -64,12 +64,10 @@ public class Producto implements Buscable {
     }
     @Override
     public String toString() {
-        return "Producto{" +
-                "Código: " + codigo +
-                ", Nombre: '" + nombre + '\'' +
-                ", Descripción: '" + descripcion + '\'' +
-                ", Precio: " + precio +
-                '}';
+        return "Código: " + codigo + "\n" +
+                "Nombre: " + nombre + "\n" +
+                "Descripción: " + descripcion + "\n" +
+                "Precio: " + precio;
     }
 
 }

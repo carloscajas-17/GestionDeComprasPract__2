@@ -28,7 +28,10 @@ public class VentanaProveedor extends Frame implements ActionListener {
     private Label lbNombre;
     private Label lbDireccion;
     private Label lbTelefono;
-    private Label lbProductos;
+    private Label lbCodeProduto;
+    private Label lbProducto;
+    private Label lbDescripcion;
+    private Label lbPrecio;
 
     private TextArea txtMostrar;
 
@@ -36,7 +39,10 @@ public class VentanaProveedor extends Frame implements ActionListener {
     private TextField txtNombre;
     private TextField txtDireccion;
     private TextField txtTelefono;
-    private TextField txtProductos;
+    private TextField txtCodeProducto;
+    private TextField txtProducto;
+    private TextField txtDescripcion;
+    private TextField txtPrecio;
 
     private CardLayout cardLayout;
     private List<Proveedor> listaProveedores = new ArrayList<>();
@@ -61,7 +67,7 @@ public class VentanaProveedor extends Frame implements ActionListener {
 
         pSuperior = new Panel();
         pCentral = new Panel(new FlowLayout(FlowLayout.CENTER));
-        pAgregar = new Panel(new GridLayout(6, 2, 10, 15));
+        pAgregar = new Panel(new GridLayout(9, 2, 10, 15));
         pListado = new Panel(new BorderLayout());
         pInferior = new Panel(cardLayout);
 
@@ -79,13 +85,19 @@ public class VentanaProveedor extends Frame implements ActionListener {
         lbNombre = new Label("Nombre: ");
         lbDireccion = new Label("Dirección: ");
         lbTelefono = new Label("Teléfono: ");
-        lbProductos = new Label("Productos: ");
+        lbCodeProduto = new Label("Código producto: ");
+        lbProducto = new Label("Productos: ");
+        lbDescripcion = new Label("Descripción: ");
+        lbPrecio = new Label("Precio: ");
 
         txtId = new TextField(15);
         txtNombre = new TextField(15);
         txtDireccion = new TextField(15);
         txtTelefono = new TextField(15);
-        txtProductos = new TextField(15);
+        txtCodeProducto = new TextField(15);
+        txtProducto = new TextField(15);
+        txtDescripcion = new TextField(15);
+        txtPrecio = new TextField(15);
 
         txtMostrar = new TextArea("Aquí se mostrara la lista de proveedores...", 5, 30);
         txtMostrar.setEditable(false);
@@ -106,8 +118,14 @@ public class VentanaProveedor extends Frame implements ActionListener {
         pAgregar.add(txtDireccion);
         pAgregar.add(lbTelefono);
         pAgregar.add(txtTelefono);
-        pAgregar.add(lbProductos);
-        pAgregar.add(txtProductos);
+        pAgregar.add(lbCodeProduto);
+        pAgregar.add(txtCodeProducto);
+        pAgregar.add(lbProducto);
+        pAgregar.add(txtProducto);
+        pAgregar.add(lbDescripcion);
+        pAgregar.add(txtDescripcion);
+        pAgregar.add(lbPrecio);
+        pAgregar.add(txtPrecio);
         pAgregar.add(btnGuardar);
         pAgregar.add(new Label(""));
 
@@ -148,11 +166,15 @@ public class VentanaProveedor extends Frame implements ActionListener {
             String nombre = txtNombre.getText();
             String direccion = txtDireccion.getText();
             String telefono = txtTelefono.getText();
-            String productotxt = txtProductos.getText();
-            Producto producto = new Producto(0, productotxt, "", 0.0);
+            int codigo = Integer.parseInt(txtCodeProducto.getText());
+            String nombreProducto = txtProducto.getText();
+            String descripcionProducto = txtDescripcion.getText();
+            double precioProducto = Double.parseDouble(txtPrecio.getText());
+
+            Producto producto = new Producto(codigo, nombreProducto, descripcionProducto, precioProducto);
             Proveedor newProveedor = new Proveedor(id, nombre, direccion, telefono, producto);
 
-            newProveedor.registrarProducto(producto.getCodigo(), producto.getNombre(), producto.getDescripcion(), producto.getPrecio()); // Registra el producto con el proveedor
+            newProveedor.registrarProducto(producto.getCodigo(), producto.getNombre(), producto.getDescripcion(), producto.getPrecio());
 
             listaProveedores.add(newProveedor);
             JOptionPane.showMessageDialog(this, "Proveedor agregado",
@@ -184,7 +206,10 @@ public class VentanaProveedor extends Frame implements ActionListener {
         txtNombre.setText("");
         txtDireccion.setText("");
         txtTelefono.setText("");
-        txtProductos.setText("");
+        txtCodeProducto.setText("");
+        txtProducto.setText("");
+        txtDescripcion.setText("");
+        txtPrecio.setText("");
     }
 
 }
