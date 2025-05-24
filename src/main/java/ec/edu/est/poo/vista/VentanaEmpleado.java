@@ -5,23 +5,24 @@ import ec.edu.est.poo.modelos.Empleado;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VentanaEmpleado extends Frame implements ActionListener {
+public class VentanaEmpleado extends Frame implements ActionListener, ItemListener {
     private Panel pSuperior;
     private Panel pCentral;
     private Panel pInferior;
     private Panel pAgregar;
     private Panel pListado;
+    private Panel pBuscar;
 
     private Button btnAgregar;
     private Button btnGuardar;
     private Button btnListar;
+    private Button btnBuscarDep;
+    private Button btnIrBuscar;
+    private Button btnBuscar;
 
     private Label titulo;
     private Label lbId;
@@ -32,18 +33,26 @@ public class VentanaEmpleado extends Frame implements ActionListener {
     private Label lbIdDep;
     private Label lbDepartamento;
 
+    private Label lbCriterio;
+
     private TextArea txtMostrar;
+    private TextArea txtBusqueda;
 
     private TextField txtId;
     private TextField txtNombre;
     private TextField txtDireccion;
     private TextField txtTelefono;
     private TextField txtCargo;
-    private TextField txtIdDep;
     private TextField txtDepartamento;
 
+    private Choice chDepartamento;
+
+    private TextField txtCriterio;
+
     private CardLayout cardLayout;
+
     private List<Empleado> listaEmpleados = new ArrayList<>();
+    private List<Departamento> departamentoList = new ArrayList<>();
 
     public VentanaEmpleado() {
         setTitle("Menú de Empleados");
@@ -67,6 +76,7 @@ public class VentanaEmpleado extends Frame implements ActionListener {
         pCentral = new Panel(new FlowLayout(FlowLayout.CENTER));
         pAgregar = new Panel(new GridLayout(8, 2, 10, 15));
         pListado = new Panel(new BorderLayout());
+        pBuscar = new Panel(new GridLayout(4, 1, 10, 15));
         pInferior = new Panel(cardLayout);
 
         pSuperior.setBackground(new Color(247, 249, 249));
@@ -77,32 +87,43 @@ public class VentanaEmpleado extends Frame implements ActionListener {
 
         btnAgregar = new Button("Agregar Empleado");
         btnListar = new Button("Listar Empleados");
+        btnBuscar = new Button("Buscar");
+
         btnGuardar = new Button("Guardar");
+
+        btnIrBuscar = new Button("Buscar Empleado");
 
         lbId = new Label("Id: ");
         lbNombre = new Label("Nombre: ");
         lbDireccion = new Label("Dirección: ");
         lbTelefono = new Label("Teléfono: ");
         lbCargo = new Label("Cargo: ");
-        lbIdDep = new Label("Id Departamento: ");
-        lbDepartamento = new Label("Departamento: ");
+        lbIdDep = new Label("Departamento: ");
+
+        lbCriterio = new Label("ID a buscar: ");
 
         txtId = new TextField(15);
         txtNombre = new TextField(15);
         txtDireccion = new TextField(15);
         txtTelefono = new TextField(15);
         txtCargo = new TextField(15);
-        txtIdDep = new TextField(15);
-        txtDepartamento = new TextField(15);
+
+        chDepartamento = new Choice();
+
+        txtCriterio = new TextField(15);
 
         txtMostrar = new TextArea("Aquí se mostrará la lista de empleados...", 5, 30);
         txtMostrar.setEditable(false);
+
+        txtBusqueda = new TextArea("Resultado de las búsqueda...", 5, 30);
+        txtBusqueda.setEditable(false);
 
         pListado.add(new Label("Aquí se mostrará a los empleados", Label.CENTER));
         pListado.add(txtMostrar, BorderLayout.CENTER);
 
         pCentral.add(btnAgregar);
         pCentral.add(btnListar);
+        pCentral.add(btnIrBuscar);
 
         pSuperior.add(titulo);
 
@@ -117,14 +138,19 @@ public class VentanaEmpleado extends Frame implements ActionListener {
         pAgregar.add(lbCargo);
         pAgregar.add(txtCargo);
         pAgregar.add(lbIdDep);
-        pAgregar.add(txtIdDep);
-        pAgregar.add(lbDepartamento);
-        pAgregar.add(txtDepartamento);
+        pAgregar.add(chDepartamento);
+        pAgregar.add(new Label(""));
         pAgregar.add(btnGuardar);
         pAgregar.add(new Label(""));
 
+        pBuscar.add(lbCriterio);
+        pBuscar.add(txtCriterio);
+        pBuscar.add(btnBuscar);
+        pBuscar.add(txtBusqueda);
+
         pInferior.add(pAgregar, "Agregar");
         pInferior.add(pListado, "Listado");
+        pInferior.add(pBuscar, "Buscar");
 
         pGeneral.add(pSuperior, BorderLayout.NORTH);
         pGeneral.add(pCentral, BorderLayout.CENTER);
@@ -137,6 +163,12 @@ public class VentanaEmpleado extends Frame implements ActionListener {
         btnAgregar.addActionListener(this);
         btnListar.addActionListener(this);
         btnGuardar.addActionListener(this);
+        btnIrBuscar.addActionListener(this);
+        btnBuscar.addActionListener(this);
+        chDepartamento.addItemListener(this);
+
+        cargarDepartamentos();
+        poblarChoices();
 
         cardLayout.show(pInferior, "Formulario");
     }
@@ -151,6 +183,15 @@ public class VentanaEmpleado extends Frame implements ActionListener {
             mostrarLista();
         } else if (e.getSource() == btnGuardar) {
             guardarEmpleado();
+        } else if (e.getSource() == btnIrBuscar) {
+            cardLayout.show(pInferior, "Buscar");
+        }
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getSource() == chDepartamento) {
+
         }
     }
 
@@ -160,8 +201,9 @@ public class VentanaEmpleado extends Frame implements ActionListener {
         txtDireccion.setText("");
         txtTelefono.setText("");
         txtCargo.setText("");
-        txtIdDep.setText("");
-        txtDepartamento.setText("");
+        if (chDepartamento.getItemCount() > 0) {
+            chDepartamento.select(0);
+        }
     }
 
     private void mostrarLista() {
@@ -171,7 +213,7 @@ public class VentanaEmpleado extends Frame implements ActionListener {
         } else {
             for (Empleado empleado : listaEmpleados) {
                 sb.append(empleado.toString());
-                sb.append("\n");
+                sb.append("\n----------\n");
             }
             txtMostrar.setText(sb.toString());
         }
@@ -184,19 +226,66 @@ public class VentanaEmpleado extends Frame implements ActionListener {
             String direccion = txtDireccion.getText();
             String telefono = txtTelefono.getText();
             String cargo = txtCargo.getText();
-            int idDep = Integer.parseInt(txtIdDep.getText());
-            String departamentoNombre = txtDepartamento.getText();
-            Departamento departamento = new Departamento(idDep, departamentoNombre);
-
-            Empleado nuevoEmpleado = new Empleado(id, nombre, direccion, telefono, cargo, departamento);
+            if (departamentoList.isEmpty() || chDepartamento.getSelectedIndex() == -1) {
+                JOptionPane.showMessageDialog(this, "Error");
+                return;
+            }
+            String idDepartamentoSt = chDepartamento.getSelectedItem();
+            int idDepartamentoInt = Integer.parseInt(idDepartamentoSt);
+            Departamento departamentoSeleccionado = null;
+            for (Departamento dep : departamentoList) {
+                if (dep.getId() == idDepartamentoInt) {
+                    departamentoSeleccionado = dep;
+                    break;
+                }
+            }
+            if (departamentoSeleccionado == null) {
+                JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            boolean idDuplicado = false;
+            for (int i = 0; i < listaEmpleados.size(); i++) {
+                Empleado emp = listaEmpleados.get(i);
+                if (emp.getId() == id) {
+                    idDuplicado = true;
+                    break;
+                }
+            }
+            if (idDuplicado) {
+                JOptionPane.showMessageDialog(this, "ERROR", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Empleado nuevoEmpleado = new Empleado(id, nombre, direccion, telefono, cargo, departamentoSeleccionado);
             listaEmpleados.add(nuevoEmpleado);
-            JOptionPane.showMessageDialog(this, "Empleado guardado con éxito.", "Guardar", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Empleado guardado con éxito.",
+                    "Guardar", JOptionPane.INFORMATION_MESSAGE);
             limpiarFormulario();
             cardLayout.show(pInferior, "Listado");
             mostrarLista();
 
         } catch (NumberFormatException error) {
-            JOptionPane.showMessageDialog(this, "Error: Ingresa un ID válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error: Ingresa un ID válido.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void cargarDepartamentos() {
+        departamentoList.add(new Departamento(1, "IT"));
+        departamentoList.add(new Departamento(2, "DP"));
+        departamentoList.add(new Departamento(3, "XD"));
+    }
+
+    private void poblarChoices() {
+        chDepartamento.removeAll();
+        if (departamentoList.isEmpty()) {
+            chDepartamento.add("No hay ID's");
+            chDepartamento.setEnabled(false);
+        } else {
+            chDepartamento.setEnabled(true);
+            for (Departamento dep : departamentoList) {
+                chDepartamento.add(String.valueOf(dep.getId()));
+            }
+            chDepartamento.select(0);
         }
     }
 }

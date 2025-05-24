@@ -120,9 +120,9 @@ public class Menu {
         System.out.print("Id del departamento: ");
         int depId = leerEntero();
 
-        Departamento departamento = new Departamento(depId, "XD");
-        Empleado empleado = new Empleado(id, nombre, direccion, telefono, cargo, departamento);
-        empleados.add(empleado);
+        //Departamento departamento = new Departamento(depId);
+        //Empleado empleado = new Empleado(id, nombre, direccion, telefono, cargo, departamento);
+        //empleados.add(empleado);
         System.out.println("Empleado registrado exitosamente.");
     }
 
