@@ -53,7 +53,15 @@ public class Proveedor extends Persona implements Buscable {
 
     @Override
     public String toString() {
-        return super.toString() + "\n" +
-                "Productos: " + productos;
+        StringBuilder sbProductos = new StringBuilder();
+        if (productos.isEmpty()) {
+            sbProductos.append("  (Ningún producto registrado)");
+        } else {
+            for (Producto p : productos) {
+                sbProductos.append("\n  - ").append(p.toString());
+            }
+        }
+        return super.toString() +
+                "Productos: " + sbProductos.toString();
     }
 }

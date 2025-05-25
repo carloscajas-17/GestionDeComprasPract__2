@@ -164,7 +164,7 @@ public class VentanaEmpleado extends Frame implements ActionListener, ItemListen
         btnBuscar.addActionListener(this);
         chDepartamento.addItemListener(this);
 
-        cargarDepartamentos();
+        cargarDatos();
         poblarChoices();
 
         cardLayout.show(pInferior, "Formulario");
@@ -225,32 +225,31 @@ public class VentanaEmpleado extends Frame implements ActionListener, ItemListen
             String telefono = txtTelefono.getText();
             String cargo = txtCargo.getText();
             if (departamentoList.isEmpty() || chDepartamento.getSelectedIndex() == -1) {
-                JOptionPane.showMessageDialog(this, "Error");
+                JOptionPane.showMessageDialog(this, "Error: No hay departamentos disponibles o no se ha seleccionado uno.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            String idDepartamentoSt = chDepartamento.getSelectedItem();
-            int idDepartamentoInt = Integer.parseInt(idDepartamentoSt);
+            String idDepartamentoSeleccionadoStr = chDepartamento.getSelectedItem();
+            int idDepartamentoSeleccionado = Integer.parseInt(idDepartamentoSeleccionadoStr);
             Departamento departamentoSeleccionado = null;
             for (Departamento dep : departamentoList) {
-                if (dep.getId() == idDepartamentoInt) {
+                if (dep.getId() == idDepartamentoSeleccionado) {
                     departamentoSeleccionado = dep;
                     break;
                 }
             }
             if (departamentoSeleccionado == null) {
-                JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error: El ID de departamento seleccionado no existe.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             boolean idDuplicado = false;
-            for (int i = 0; i < listaEmpleados.size(); i++) {
-                Empleado emp = listaEmpleados.get(i);
+            for (Empleado emp : listaEmpleados) {
                 if (emp.getId() == id) {
                     idDuplicado = true;
                     break;
                 }
             }
             if (idDuplicado) {
-                JOptionPane.showMessageDialog(this, "ERROR", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error: Ya existe un empleado con este ID.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             Empleado nuevoEmpleado = new Empleado(id, nombre, direccion, telefono, cargo, departamentoSeleccionado);
@@ -260,17 +259,21 @@ public class VentanaEmpleado extends Frame implements ActionListener, ItemListen
             limpiarFormulario();
             cardLayout.show(pInferior, "Listado");
             mostrarLista();
-
         } catch (NumberFormatException error) {
-            JOptionPane.showMessageDialog(this, "Error: Ingresa un ID válido.",
+            JOptionPane.showMessageDialog(this, "Error: Ingresa valores numéricos válidos para ID y Teléfono.",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void cargarDepartamentos() {
+    private void cargarDatos() {
         departamentoList.add(new Departamento(1, "IT"));
         departamentoList.add(new Departamento(2, "DP"));
         departamentoList.add(new Departamento(3, "XD"));
+
+        listaEmpleados.add(new Empleado(1, "Juan Perez", "Machala",
+                "12345", "Gerente", departamentoList.get(0)));
+        listaEmpleados.add(new Empleado(102, "Ana Lopez", "Quito",
+                "0231231", "Analista", departamentoList.get(1)));
     }
 
     private void poblarChoices() {

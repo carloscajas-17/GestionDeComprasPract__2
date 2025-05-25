@@ -168,6 +168,8 @@ public class VentanaProveedor extends Frame implements ActionListener {
         btnIrBuscar.addActionListener(this);
         btnBuscar.addActionListener(this);
 
+        cargarDatos();
+
         cardLayout.show(pInferior, "Formulario");
     }
 
@@ -194,24 +196,36 @@ public class VentanaProveedor extends Frame implements ActionListener {
             String nombre = txtNombre.getText();
             String direccion = txtDireccion.getText();
             String telefono = txtTelefono.getText();
-            int codigo = Integer.parseInt(txtCodeProducto.getText());
+            int codigoProducto = Integer.parseInt(txtCodeProducto.getText());
             String nombreProducto = txtProducto.getText();
             String descripcionProducto = txtDescripcion.getText();
             double precioProducto = Double.parseDouble(txtPrecio.getText());
-
-            Producto producto = new Producto(codigo, nombreProducto, descripcionProducto, precioProducto);
-            Proveedor newProveedor = new Proveedor(id, nombre, direccion, telefono, producto);
-
-            newProveedor.registrarProducto(producto.getCodigo(), producto.getNombre(), producto.getDescripcion(), producto.getPrecio());
-
-            listaProveedores.add(newProveedor);
-            JOptionPane.showMessageDialog(this, "Proveedor agregado",
-                    "Guardar", JOptionPane.INFORMATION_MESSAGE);
+            boolean idDuplicado = false;
+            for (Proveedor p : listaProveedores) {
+                if (p.getId() == id) {
+                    idDuplicado = true;
+                    p.registrarProducto(codigoProducto, nombreProducto, descripcionProducto, precioProducto);
+                    JOptionPane.showMessageDialog(this, "Producto agregado al proveedor existente.",
+                            "Guardar Producto", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                }
+            }
+            if (!idDuplicado) {
+                Producto producto = new Producto(codigoProducto, nombreProducto, descripcionProducto, precioProducto);
+                Proveedor newProveedor = new Proveedor(id, nombre, direccion, telefono, null);
+                newProveedor.registrarProducto(producto.getCodigo(), producto.getNombre(), producto.getDescripcion(), producto.getPrecio());
+                listaProveedores.add(newProveedor);
+                JOptionPane.showMessageDialog(this, "Nuevo proveedor y producto agregado.",
+                        "Guardar Proveedor", JOptionPane.INFORMATION_MESSAGE);
+            }
             limpiar();
             cardLayout.show(pInferior, "Listado");
             mostrarProveedores();
         } catch (NumberFormatException error) {
-            JOptionPane.showMessageDialog(this, "Error",
+            JOptionPane.showMessageDialog(this, "Error: Revisa los campos numéricos (ID, Código, Precio).",
+                    "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado: " + ex.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -223,7 +237,7 @@ public class VentanaProveedor extends Frame implements ActionListener {
         } else {
             for (Proveedor proveedor : listaProveedores) {
                 sb.append(proveedor.toString());
-                sb.append("\n");
+                sb.append("\n---------\n");
             }
             txtMostrar.setText(sb.toString());
         }
@@ -238,6 +252,23 @@ public class VentanaProveedor extends Frame implements ActionListener {
         txtProducto.setText("");
         txtDescripcion.setText("");
         txtPrecio.setText("");
+    }
+
+    private void cargarDatos() {
+        Producto p1 = new Producto(1, "Laptop", "Alta gama", 1200);
+        Producto p2 = new Producto(2, "Mouse", "Ergonómico", 25);
+        Producto p3 = new Producto(3, "Teclado", "Mecánico", 80);
+
+        Proveedor proveedor1 = new Proveedor(1, "Tech Supplies",
+                "Cuenca", "121123", p1);
+        proveedor1.registrarProducto(p1.getCodigo(), p1.getNombre(), p1.getDescripcion(), p1.getPrecio());
+        proveedor1.registrarProducto(p2.getCodigo(), p2.getNombre(), p2.getDescripcion(), p2.getPrecio());
+        listaProveedores.add(proveedor1);
+
+        Proveedor proveedor2 = new Proveedor(2, "Office Goods",
+                "Piñas", "56321313", p3);
+        proveedor2.registrarProducto(p3.getCodigo(), p3.getNombre(), p3.getDescripcion(), p3.getPrecio());
+        listaProveedores.add(proveedor2);
     }
 
     private void buscarProveedor() {
