@@ -27,7 +27,15 @@ public class Proveedor extends Persona implements Buscable {
 
     @Override
     public boolean coincideCon(String criterio) {
-        return  String.valueOf(getId()).equals(criterio);
+        if (criterio == null) {
+            return  false;
+        }
+        try {
+            int idCriterio = Integer.parseInt(criterio.trim());
+            return this.getId() == idCriterio;
+        } catch (NumberFormatException e) {
+            return  false;
+        }
     }
 
     @Override

@@ -20,7 +20,6 @@ public class VentanaEmpleado extends Frame implements ActionListener, ItemListen
     private Button btnAgregar;
     private Button btnGuardar;
     private Button btnListar;
-    private Button btnBuscarDep;
     private Button btnIrBuscar;
     private Button btnBuscar;
 
@@ -31,7 +30,6 @@ public class VentanaEmpleado extends Frame implements ActionListener, ItemListen
     private Label lbTelefono;
     private Label lbCargo;
     private Label lbIdDep;
-    private Label lbDepartamento;
 
     private Label lbCriterio;
 
@@ -43,7 +41,6 @@ public class VentanaEmpleado extends Frame implements ActionListener, ItemListen
     private TextField txtDireccion;
     private TextField txtTelefono;
     private TextField txtCargo;
-    private TextField txtDepartamento;
 
     private Choice chDepartamento;
 
@@ -115,7 +112,7 @@ public class VentanaEmpleado extends Frame implements ActionListener, ItemListen
         txtMostrar = new TextArea("Aquí se mostrará la lista de empleados...", 5, 30);
         txtMostrar.setEditable(false);
 
-        txtBusqueda = new TextArea("Resultado de las búsqueda...", 5, 30);
+        txtBusqueda = new TextArea("Resultado de la búsqueda...", 5, 30);
         txtBusqueda.setEditable(false);
 
         pListado.add(new Label("Aquí se mostrará a los empleados", Label.CENTER));
@@ -185,13 +182,14 @@ public class VentanaEmpleado extends Frame implements ActionListener, ItemListen
             guardarEmpleado();
         } else if (e.getSource() == btnIrBuscar) {
             cardLayout.show(pInferior, "Buscar");
+        } else if (e.getSource() == btnBuscar) {
+            buscarEmpleado();
         }
     }
 
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == chDepartamento) {
-
         }
     }
 
@@ -286,6 +284,33 @@ public class VentanaEmpleado extends Frame implements ActionListener, ItemListen
                 chDepartamento.add(String.valueOf(dep.getId()));
             }
             chDepartamento.select(0);
+        }
+    }
+
+    private void buscarEmpleado() {
+        txtBusqueda.setText("");
+        String criterio = txtCriterio.getText().trim();
+        if (criterio.isEmpty()) {
+            txtBusqueda.setText("Por favor, ingrese un Id");
+            return;
+        }
+        List<Empleado> resultados = new ArrayList<>();
+        for (Empleado empleado : listaEmpleados) {
+            if (empleado.coincideCon(criterio)) {
+                resultados.add(empleado);
+                break;
+            }
+        }
+        if (resultados.isEmpty()) {
+            txtBusqueda.setText("No se encontró al empleado con el Id: " + criterio);
+        } else {
+            StringBuilder sbResult = new StringBuilder();
+            sbResult.append("Resultado de la búsqueda");
+            for (Empleado empleado : resultados) {
+                sbResult.append(empleado.toString());
+                sbResult.append("\n----------\n");
+            }
+            txtBusqueda.setText(sbResult.toString());
         }
     }
 }

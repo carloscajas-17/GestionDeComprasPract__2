@@ -127,7 +127,7 @@ public class Menu {
     }
 
     public void registrarSolicitud() {
-        System.out.print("ID de la solicitud: ");
+        System.out.print("ID de la solicitud: a");
         int id = leerEntero();
         System.out.print("Departamento solicitante: ");
         String departamento = scanner.nextLine();

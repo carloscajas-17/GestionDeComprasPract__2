@@ -18,10 +18,13 @@ public class VentanaProveedor extends Frame implements ActionListener {
     private Panel pInferior;
     private Panel pAgregar;
     private Panel pListado;
+    private Panel pBuscar;
 
     private Button btnAgregar;
     private Button btnGuardar;
     private Button btnListar;
+    private Button btnIrBuscar;
+    private Button btnBuscar;
 
     private Label titulo;
     private Label lbId;
@@ -32,8 +35,10 @@ public class VentanaProveedor extends Frame implements ActionListener {
     private Label lbProducto;
     private Label lbDescripcion;
     private Label lbPrecio;
+    private Label lbCriterio;
 
     private TextArea txtMostrar;
+    private TextArea txtBusqueda;
 
     private TextField txtId;
     private TextField txtNombre;
@@ -43,6 +48,7 @@ public class VentanaProveedor extends Frame implements ActionListener {
     private TextField txtProducto;
     private TextField txtDescripcion;
     private TextField txtPrecio;
+    private TextField txtCriterio;
 
     private CardLayout cardLayout;
     private List<Proveedor> listaProveedores = new ArrayList<>();
@@ -69,6 +75,7 @@ public class VentanaProveedor extends Frame implements ActionListener {
         pCentral = new Panel(new FlowLayout(FlowLayout.CENTER));
         pAgregar = new Panel(new GridLayout(9, 2, 10, 15));
         pListado = new Panel(new BorderLayout());
+        pBuscar = new Panel(new GridLayout(4, 1, 10, 15));
         pInferior = new Panel(cardLayout);
 
         pSuperior.setBackground(new Color(247, 249, 249));
@@ -80,6 +87,8 @@ public class VentanaProveedor extends Frame implements ActionListener {
         btnAgregar = new Button("Agregar Proveedor");
         btnGuardar = new Button("Guardar");
         btnListar = new Button("Listar Proveedores");
+        btnBuscar = new Button("Buscar");
+        btnIrBuscar = new Button("Buscar proveedor");
 
         lbId = new Label("Id: ");
         lbNombre = new Label("Nombre: ");
@@ -102,6 +111,12 @@ public class VentanaProveedor extends Frame implements ActionListener {
         txtMostrar = new TextArea("Aquí se mostrara la lista de proveedores...", 5, 30);
         txtMostrar.setEditable(false);
 
+        lbCriterio = new Label("Id a buscar: ");
+        txtCriterio = new TextField(15);
+
+        txtBusqueda = new TextArea("Resultado de la búsqueda...", 5, 30);
+        txtBusqueda.setEditable(false);
+
         pListado.add(new Label("Aquí se mostrará a los proveedores"));
         pListado.add(txtMostrar, BorderLayout.CENTER);
 
@@ -109,6 +124,7 @@ public class VentanaProveedor extends Frame implements ActionListener {
 
         pCentral.add(btnAgregar);
         pCentral.add(btnListar);
+        pCentral.add(btnIrBuscar);
 
         pAgregar.add(lbId);
         pAgregar.add(txtId);
@@ -129,8 +145,14 @@ public class VentanaProveedor extends Frame implements ActionListener {
         pAgregar.add(btnGuardar);
         pAgregar.add(new Label(""));
 
+        pBuscar.add(lbCriterio);
+        pBuscar.add(txtCriterio);
+        pBuscar.add(btnBuscar);
+        pBuscar.add(txtBusqueda);
+
         pInferior.add(pAgregar, "Agregar");
         pInferior.add(pListado, "Listado");
+        pInferior.add(pBuscar, "Buscar");
 
         pGeneral.add(pSuperior, BorderLayout.NORTH);
         pGeneral.add(pCentral, BorderLayout.CENTER);
@@ -143,6 +165,8 @@ public class VentanaProveedor extends Frame implements ActionListener {
         btnAgregar.addActionListener(this);
         btnListar.addActionListener(this);
         btnGuardar.addActionListener(this);
+        btnIrBuscar.addActionListener(this);
+        btnBuscar.addActionListener(this);
 
         cardLayout.show(pInferior, "Formulario");
     }
@@ -157,6 +181,10 @@ public class VentanaProveedor extends Frame implements ActionListener {
         } else if(e.getSource() == btnListar) {
             cardLayout.show(pInferior, "Listado");
             mostrarProveedores();
+        } else if (e.getSource() == btnIrBuscar) {
+            cardLayout.show(pInferior, "Buscar");
+        } else if (e.getSource() == btnBuscar) {
+            buscarProveedor();
         }
     }
 
@@ -212,4 +240,30 @@ public class VentanaProveedor extends Frame implements ActionListener {
         txtPrecio.setText("");
     }
 
+    private void buscarProveedor() {
+        txtBusqueda.setText("");
+        String criterio = txtCriterio.getText().trim();
+        if (criterio.isEmpty()) {
+            txtBusqueda.setText("Por favor, ingrese un Id...");
+            return;
+        }
+        List<Proveedor> resultados = new ArrayList<>();
+        for (Proveedor proveedor : listaProveedores) {
+            if (proveedor.coincideCon(criterio)) {
+                resultados.add(proveedor);
+                break;
+            }
+        }
+        if (resultados.isEmpty()) {
+            txtBusqueda.setText("No se encontraron proveedores con el Id: " + criterio);
+        } else {
+            StringBuilder sbResult = new StringBuilder();
+            sbResult.append("Resultado de la búsqueda");
+            for (Proveedor proveedor : resultados) {
+                sbResult.append(proveedor.toString());
+                sbResult.append("\n----------\n");
+            }
+            txtBusqueda.setText(sbResult.toString());
+        }
+    }
 }
