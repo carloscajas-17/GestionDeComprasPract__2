@@ -8,6 +8,12 @@ public class SolicitudCompra implements Calculable, Buscable {
     private Departamento departamento;
     private EstadoSolicitud estado;
     private List<DetalleCompra> productos;
+    private Empleado empleado;
+
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
 
     public SolicitudCompra(int id, String departamento, EstadoSolicitud estado, List<DetalleCompra> detalles) {
 
@@ -19,6 +25,9 @@ public class SolicitudCompra implements Calculable, Buscable {
         this.departamento = departamento;
         this.estado = estado;
         this.productos = productos;
+    }
+
+    public SolicitudCompra(Empleado emp) {
     }
 
     public int getId() {
@@ -114,5 +123,8 @@ public class SolicitudCompra implements Calculable, Buscable {
                 ", Estado: " + estado +
                 ", Productos: " + productos +
                 '}';
+    }
+
+    public void agregarProducto(DetalleCompra detalle) {
     }
 }

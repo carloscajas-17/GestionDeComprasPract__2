@@ -1,101 +1,142 @@
 package ec.edu.est.poo.vista;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.List;
-//import java.util.Vector
 import ec.edu.est.poo.modelos.*;
 
-public class VentanaListaSolicitud extends Frame {
-    private Choice chSolicitudes;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class VentanaListaSolicitud extends Frame implements ActionListener {
+    private TextField txtIdEmpleado, txtDepartamento, txtCodigoProducto;
     private Choice chEstado;
     private TextArea areaDetalle;
-    private Button btnAgregarProducto;
-    private Button btnGuardar;
-    private List<SolicitudCompra> solicitudes;
+    private Button btnVerProducto, btnAgregarProducto, btnGuardar;
+
+    private List<SolicitudCompra> solicitudes = new ArrayList<>();
+    private List<Producto> productos = new ArrayList<>();
+    private List<Empleado> empleados = new ArrayList<>();
     private SolicitudCompra solicitudActual;
 
-    public VentanaListaSolicitud(List<SolicitudCompra> solicitudes) {
-        this.solicitudes = solicitudes;
-
-        setTitle("Gestión de Solicitudes");
+    public VentanaListaSolicitud() {
+        setTitle("Ventana Lista Solicitud");
         setSize(600, 600);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
 
-        // Panel superior: Selección de solicitud
-        Panel pSuperior = new Panel(new GridLayout(3, 2, 10, 10));
-        pSuperior.setBackground(new Color(230, 240, 255));
-        Label lblSeleccion = new Label("Selecciona ID de Solicitud:");
-        chSolicitudes = new Choice();
+        // Parte superior
+        Panel panelTop = new Panel(new GridLayout(4, 2, 10, 10));
+        panelTop.setBackground(new Color(220, 240, 255));
 
-        for (SolicitudCompra s : solicitudes) {
-            chSolicitudes.add(String.valueOf(s.getId()));
-        }
+        panelTop.add(new Label("ID Empleado:"));
+        txtIdEmpleado = new TextField();
+        panelTop.add(txtIdEmpleado);
 
-        Label lblEstado = new Label("Estado de la Solicitud:");
+        panelTop.add(new Label("Departamento:"));
+        txtDepartamento = new TextField();
+        txtDepartamento.setEditable(false);
+        panelTop.add(txtDepartamento);
+
+        panelTop.add(new Label("Estado:"));
         chEstado = new Choice();
-        chEstado.add("PENDIENTE");
-        chEstado.add("APROBADA");
-        chEstado.add("RECHAZADA");
+        for (EstadoSolicitud estado : EstadoSolicitud.values()) {
+            chEstado.add(estado.name());
+        }
+        panelTop.add(chEstado);
 
-        pSuperior.add(lblSeleccion);
-        pSuperior.add(chSolicitudes);
-        pSuperior.add(lblEstado);
-        pSuperior.add(chEstado);
+        panelTop.add(new Label("Código Producto:"));
+        txtCodigoProducto = new TextField();
+        panelTop.add(txtCodigoProducto);
 
-        // Panel central: Detalles de solicitud
-        areaDetalle = new TextArea(20, 60);
+        add(panelTop, BorderLayout.NORTH);
+
+        // Centro
+        areaDetalle = new TextArea();
         areaDetalle.setEditable(false);
-
-        // Panel inferior: botones
-        Panel pInferior = new Panel();
-        btnAgregarProducto = new Button("Agregar Producto");
-        btnGuardar = new Button("Guardar Cambios");
-        pInferior.add(btnAgregarProducto);
-        pInferior.add(btnGuardar);
-
-        add(pSuperior, BorderLayout.NORTH);
         add(areaDetalle, BorderLayout.CENTER);
-        add(pInferior, BorderLayout.SOUTH);
 
-        // Listeners
-        chSolicitudes.addItemListener(e -> cargarSolicitud());
-        btnGuardar.addActionListener(e -> guardarCambios());
-        //btnAgregarProducto.addActionListener(this::actionPerformed);
+        // Inferior
+        Panel panelBotones = new Panel();
+        btnVerProducto = new Button("Ver Info");
+        btnAgregarProducto = new Button("Agregar Producto");
+        btnGuardar = new Button("Guardar");
 
-        cargarSolicitud(); // Cargar primera solicitud
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                dispose();
-            }
-        });
+        panelBotones.add(btnVerProducto);
+        panelBotones.add(btnAgregarProducto);
+        panelBotones.add(btnGuardar);
+        add(panelBotones, BorderLayout.SOUTH);
 
+        // Eventos
+        txtIdEmpleado.addActionListener(e -> cargarEmpleado());
+        btnVerProducto.addActionListener(this);
+        btnAgregarProducto.addActionListener(this);
+        btnGuardar.addActionListener(this);
+
+        precargarDatos();
         setVisible(true);
     }
 
-    private void cargarSolicitud() {
-        int idSeleccionado = Integer.parseInt(chSolicitudes.getSelectedItem());
-        for (SolicitudCompra s : solicitudes) {
-            if (s.getId() == idSeleccionado) {
-                solicitudActual = s;
-                break;
+    private void precargarDatos() {
+        // Productos
+        productos.add(new Producto(100, "Mouse", "Mouse óptico", 10.0));
+        productos.add(new Producto(101, "Teclado", "Teclado mecánico", 25.5));
+
+        // Departamento y empleado
+        Departamento dep = new Departamento(1, "IT");
+        Empleado emp = new Empleado(1, "Andres Cajas", "Loja", "0987654321", "Ingeniero", dep);
+        empleados.add(emp);
+
+        // Solicitud precargada con productos
+        SolicitudCompra solicitud = new SolicitudCompra(emp);
+        solicitud.setProductos(new ArrayList<>());
+        solicitud.setEstado(EstadoSolicitud.SOLICITADA);
+        solicitud.getProductos().add(new DetalleCompra(productos.get(0), 2));
+        solicitud.getProductos().add(new DetalleCompra(productos.get(1), 1));
+        solicitudes.add(solicitud);
+    }
+
+    private void cargarEmpleado() {
+        String idStr = txtIdEmpleado.getText().trim();
+        for (Empleado emp : empleados) {
+            if (String.valueOf(emp.getId()).equals(idStr)) {
+                txtDepartamento.setText(emp.getDepartamento().getNombre());
+
+                // Verificar si ya existe la solicitud
+                for (SolicitudCompra sc : solicitudes) {
+                    if (sc.getEmpleado() != null && sc.getEmpleado().getId() == emp.getId()) {
+                        solicitudActual = sc;
+                        chEstado.select(solicitudActual.getEstado().name());
+                        mostrarDetalle();
+                        return;
+                    }
+                }
+
+                // Si no existe, se crea
+                solicitudActual = new SolicitudCompra(emp);
+                solicitudActual.setProductos(new ArrayList<>());
+                solicitudActual.setEstado(EstadoSolicitud.SOLICITADA);
+                solicitudes.add(solicitudActual);
+                chEstado.select(solicitudActual.getEstado().name());
+                mostrarDetalle();
+                return;
             }
         }
+        areaDetalle.setText("Empleado no encontrado.");
+    }
 
-        chEstado.select(solicitudActual.getEstado().name());
+    private void mostrarDetalle() {
+        if (solicitudActual == null) return;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("ID: ").append(solicitudActual.getId()).append("\n");
+        sb.append("Empleado: ").append(solicitudActual.getEmpleado().getNombre()).append("\n");
         sb.append("Departamento: ").append(solicitudActual.getDepartamento().getNombre()).append("\n");
         sb.append("Estado: ").append(solicitudActual.getEstado()).append("\n\n");
         sb.append("Productos:\n");
 
         for (DetalleCompra d : solicitudActual.getProductos()) {
             Producto p = d.getProducto();
-            sb.append("- ").append(p.getNombre())
-                    .append(", Cantidad: ").append(d.getCantidad())
-                    .append(", Precio: $").append(p.getPrecio()).append("\n");
+            sb.append("- ").append(p.getNombre()).append(", Precio: $")
+                    .append(p.getPrecio()).append(", Cantidad: ").append(d.getCantidad()).append("\n");
         }
 
         sb.append("\nSubtotal: $").append(solicitudActual.calcularSubtotal());
@@ -105,29 +146,43 @@ public class VentanaListaSolicitud extends Frame {
         areaDetalle.setText(sb.toString());
     }
 
-    private void guardarCambios() {
-        String nuevoEstado = chEstado.getSelectedItem();
-        solicitudActual.setEstado(EstadoSolicitud.valueOf(nuevoEstado));
-        cargarSolicitud();
-        showMessage("Cambios guardados correctamente.");
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnVerProducto) {
+            try {
+                int codigo = Integer.parseInt(txtCodigoProducto.getText());
+                for (Producto p : productos) {
+                    if (p.getCodigo() == codigo) {
+                        areaDetalle.setText(p.toString());
+                        return;
+                    }
+                }
+                areaDetalle.setText("Producto no encontrado.");
+            } catch (NumberFormatException ex) {
+                areaDetalle.setText("Código inválido.");
+            }
+        } else if (e.getSource() == btnAgregarProducto) {
+            try {
+                int codigo = Integer.parseInt(txtCodigoProducto.getText());
+                for (Producto p : productos) {
+                    if (p.getCodigo() == codigo) {
+                        if (solicitudActual != null) {
+                            solicitudActual.getProductos().add(new DetalleCompra(p, 1));
+                            mostrarDetalle();
+                        }
+                        return;
+                    }
+                }
+                areaDetalle.setText("Producto no encontrado.");
+            } catch (NumberFormatException ex) {
+                areaDetalle.setText("Código inválido.");
+            }
+        } else if (e.getSource() == btnGuardar) {
+            if (solicitudActual != null) {
+                solicitudActual.setEstado(EstadoSolicitud.valueOf(chEstado.getSelectedItem()));
+                mostrarDetalle();
+                areaDetalle.append("\n\nEstado actualizado correctamente.");
+            }
+        }
     }
-
-    private void showMessage(String mensaje) {
-        Dialog d = new Dialog(this, "Mensaje", true);
-        d.setLayout(new FlowLayout());
-        d.add(new Label(mensaje));
-        Button b = new Button("OK");
-        b.addActionListener(e -> d.setVisible(false));
-        d.add(b);
-        d.setSize(250, 100);
-        d.setLocationRelativeTo(this);
-        d.setVisible(true);
-    }
-
-    //private void actionPerformed(ActionEvent e) {
-      //  if (solicitudActual != null) {
-        //    new VentanaProducto(solicitudActual);
-          //  cargarSolicitud();
-        //}
-    //}
 }

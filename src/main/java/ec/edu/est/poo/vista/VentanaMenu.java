@@ -90,9 +90,10 @@ public class VentanaMenu extends Frame implements ActionListener {
         btnSolicitud.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VentanaListaSolicitud ventanaListaSolicitud = new VentanaListaSolicitud(solicitudCompras);
+                new VentanaListaSolicitud(); // Ya no se le pasa lista
             }
         });
+
         btnProducto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
